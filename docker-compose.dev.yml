@@ -1,0 +1,36 @@
+version: "3.9"
+
+services:
+  db_dev:
+    image: postgres:15.3-alpine
+    env_file:
+      - envfile/.env.db.dev
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  web_dev:
+    build:
+      context: app
+      dockerfile: Dockerfile.dev
+    image: web_dev
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - ./app/:/usr/src/app/
+    ports:
+      - "8000:8000"
+    env_file:
+      - envfile/.env.dev
+      - envfile/.env.db.dev
+    depends_on:
+      db_dev:
+        condition: service_healthy
+
+volumes:
+  postgres_data:
