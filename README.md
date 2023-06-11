@@ -1,5 +1,5 @@
 # Django + Docker quickstart
-Easy setup for development or production environment
+Django Template - Easy setup for development or production environment with Docker
 
 ### This initiative is a union of two other projects:
 - [Django Quickstart](https://github.com/henriquebastos/django-quickstart/)
