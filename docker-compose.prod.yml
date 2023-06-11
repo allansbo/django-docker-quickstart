@@ -1,0 +1,51 @@
+version: "3.9"
+
+services:
+  db:
+    image: postgres:15.3-alpine
+    env_file:
+      - envfile/.env.db.prod
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  gunicorn:
+    build:
+      context: app
+      dockerfile: Dockerfile.prod
+    image: web_prod
+    container_name: web_gunicorn_prod
+    command: gunicorn project_name.wsgi:application --bind 0.0.0.0:8000
+    volumes:
+      - static_volume:/home/app/web/staticfiles
+      - media_volume:/home/app/web/mediafiles
+    expose:
+      - 8000
+    env_file:
+      - envfile/.env.prod
+      - envfile/.env.db.prod
+    depends_on:
+      db:
+        condition: service_healthy
+
+  nginx:
+    image: nginx:alpine
+    volumes:
+      - ./default.conf:/etc/nginx/conf.d/default.conf
+      - static_volume:/home/app/web/staticfiles
+      - media_volume:/home/app/web/mediafiles
+    ports:
+      - "80:80"
+    links:
+      - gunicorn
+
+volumes:
+  postgres_data:
+  static_volume:
+  media_volume:
