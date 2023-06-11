@@ -1,5 +1,5 @@
 """
-URL configuration for project_name project.
+URL configuration for {{ project_name }} project.
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/4.2/topics/http/urls/
@@ -20,7 +20,7 @@ from django.contrib import admin
 from django.urls import path, include
 
 urlpatterns = [
-    path('', include('project_name.core.urls', namespace='core')),
+    path('', include('{{ project_name }}.core.urls', namespace='core')),
     path('admin/', admin.site.urls),
 ]
 

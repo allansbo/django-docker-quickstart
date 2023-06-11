@@ -21,7 +21,7 @@ services:
       dockerfile: Dockerfile.prod
     image: web_prod
     container_name: web_gunicorn_prod
-    command: gunicorn project_name.wsgi:application --bind 0.0.0.0:8000
+    command: gunicorn {{ project_name }}.wsgi:application --bind 0.0.0.0:8000
     volumes:
       - static_volume:/home/app/web/staticfiles
       - media_volume:/home/app/web/mediafiles
