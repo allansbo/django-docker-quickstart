@@ -13,10 +13,12 @@ Easy setup for development or production environment
 - Support to PostgreSQL with [psycopg-binary](https://pypi.org/project/psycopg-binary/)
 - Support to pytest and pytest-django
 
+## One command
 
 **Important!** Update "myProject" with the name from your project
+
 See the docs about [Django templates](https://docs.djangoproject.com/en/4.2/ref/django-admin/#startapp)
-## One command
+
 ```bash
 PROJECT_NAME=myProject && \
 python -m venv .venv && \
